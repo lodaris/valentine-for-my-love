@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Будешь моей валентинкой?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fce4ec;
+            font-family: 'Varela Round', sans-serif;
+            overflow: hidden;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+		
+		.tight-text {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+        h1 {
+            color: #d81b60;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .gif-container {
+            margin-bottom: 20px;
+        }
+
+        .gif-container img {
+            width: 200px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Varela Round', sans-serif;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #yesBtn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background-color: #43a047;
+            transform: scale(1.05);
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .heart {
+            position: absolute;
+            color: #e91e63;
+            animation: float 6s linear infinite;
+            z-index: 1;
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        #success-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-container"></div>
+
+    <div class="container" id="main-screen">
+        <div class="gif-container">
+            <img id="mainGif" src="https://media.tenor.com/YRTnNaQNNmwAAAAj/love.gif" alt="Cute Bear">
+        </div>
+        <h1 id="question">Рит, ты будешь моей валентинкой?.. 💖</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="handleYes()">Да!</button>
+            <button id="noBtn" onclick="handleNo()">Нет</button>
+        </div>
+    </div>
+
+    <div class="container" id="success-screen">
+        <div class="gif-container">
+            <img src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" alt="Happy Bear">
+        </div>
+		<h1 class="tight-text">Ураааааааа!!! Не сомневался в тебе!!</h1>
+		<h1 class="tight-text">Люблю тебя очень-очень сильно!!!💖💘</h1>
+    </div>
+
+    <script>
+        const noTexts = [
+            "Нет",
+            "Рит, ты уверена?..",
+            "Правда нет?(",
+            "Подумай еще раз..",
+            "Последний шанс!!",
+            "Ну пожааалуйста...😭😭",
+            "Не разбивай мне сердце 💔",
+            "Ладно, я понял...",
+            "ШУТКА! Соглашайся! ❤️"
+        ];
+
+        let noClickCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainGif = document.getElementById('mainGif');
+        const question = document.getElementById('question');
+
+        const sadGif = "https://media.tenor.com/Qu6GUg0Yx90AAAAi/mocha-cry.gif"; 
+        
+        function handleNo() {
+            noClickCount++;
+            
+            if (noClickCount < noTexts.length) {
+                noBtn.innerText = noTexts[noClickCount];
+            }
+
+            const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = `${currentSize * 1.5}px`;
+            yesBtn.style.padding = `${parseFloat(window.getComputedStyle(yesBtn).paddingTop) * 1.2}px ${parseFloat(window.getComputedStyle(yesBtn).paddingRight) * 1.5}px`;
+
+            mainGif.src = sadGif;
+            question.innerText = "Ну почему нет? 🥺";
+        }
+
+        function handleYes() {
+            document.getElementById('main-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'flex';
+        }
+
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts-container');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }, 300);
+        }
+
+        createHearts();
+    </script>
+</body>
+</html>
